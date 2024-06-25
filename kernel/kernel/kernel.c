@@ -25,7 +25,6 @@
 #include <kernel/rtc.h>
 #include <kernel/serial.h>
 #include <kernel/syscall.h>
-#include <kernel/tty.h>
 #include <kernel/tty_framebuffer.h>
 #include <kernel/vfs.h>
 #include <math.h>
@@ -61,6 +60,7 @@ void kernel_main(uint32_t addr, uint32_t magic) {
   log(LOG_SERIAL, false, "FPU initialized\n");
   init_pmm(addr);
   init_paging(addr);
+  log(LOG_SERIAL, false, "Paging enabled\n");
   vfs_init();
   log(LOG_SERIAL, false, "MedusaOS\n");
   log(LOG_SERIAL, false, "kernel is %d KiB large\n",
@@ -151,12 +151,12 @@ void kernel_main(uint32_t addr, uint32_t magic) {
       }
     } break;
     case MULTIBOOT_TAG_TYPE_FRAMEBUFFER: {
-      multiboot_uint32_t color;
-      // unsigned i;
+      // multiboot_uint32_t color;
+      //  unsigned i;
 
       struct multiboot_tag_framebuffer* tagfb =
           (struct multiboot_tag_framebuffer*)tag;
-      void* fb = (void*)(unsigned long)tagfb->common.framebuffer_addr;
+      // void* fb = (void*)(unsigned long)tagfb->common.framebuffer_addr;
       log(LOG_SERIAL, false, "framebuffer type : %d\n",
           tagfb->common.framebuffer_type);
       init_fb(tagfb);
@@ -272,7 +272,6 @@ void kernel_main(uint32_t addr, uint32_t magic) {
   render_window(win);
   // render_window(win);
 #else
-  // terminal_initialize();
   terminal_framebuffer_initialize();
 #endif
   descriptor_tables_initialize();
@@ -291,16 +290,9 @@ void kernel_main(uint32_t addr, uint32_t magic) {
   // ps2_initialize();
   keyboard_install();
 #if GUI_MODE
-  mouse_install();
 #else
   char timer_str[] = "System timer is ticking\n";
-  terminal_tick_init(sizeof(timer_str));
-  terminal_enable_tick();
   puts(timer_str);
-  char key_str[] = "Last keypress:\n";
-  terminal_keypress_init(sizeof(key_str));
-  terminal_enable_keypress();
-  puts(key_str);
 #endif
   x86_enable_int();
   sse_init();
@@ -325,9 +317,6 @@ void kernel_main(uint32_t addr, uint32_t magic) {
   int* test = kmalloc(sizeof(int));
   *test = 2;
   log(LOG_SERIAL, false, "pointer returned : %p\n", test);
-  // paging_enable();
-  /*initialise_paging();
-  log(LOG_SERIAL, false, "Paging enabled\n");*/
   int* test2 = kmalloc(sizeof(int));
   int* test3 = kmalloc(sizeof(int));
   *test2 = 4;
@@ -338,13 +327,7 @@ void kernel_main(uint32_t addr, uint32_t magic) {
   kfree(test);
   kfree(test2);
   kfree(test3);
-  // register_devices_necessary();
-  // log(LOG_ALL, true, "Paging enabled\n");
-  // uint32_t *ptr = (uint32_t*)0xA0000000;
-  // uint32_t do_page_fault = *ptr;
-  switch_led(KBD_LED_SCROLL_LOCK);
-  switch_led(KBD_LED_SCROLL_LOCK | KBD_LED_NUMBER_LOCK);
-  switch_led(KBD_LED_CAPS_LOCK);
+
   int i = 1233;
 #if GUI_MODE
 #else
@@ -353,21 +336,6 @@ void kernel_main(uint32_t addr, uint32_t magic) {
   printf("Press ESC to reboot\n");
   alert("error : %s\n", "string");
   fprintf(VFS_FD_STDOUT, "hello from fprintf stdout\n");
-  /*hashtable_t* htable = hashtable_create();
-  int* a = kmalloc(sizeof(int));
-  *a = 300;
-  hashtable_set(htable, "testkey", a);
-  log(LOG_SERIAL, false, "test after\n");
-  //int* result = NULL;
-  int* result = hashtable_get("testkey", htable);
-  log(LOG_SERIAL, false, "test hash table result (should be 300) : %d at address
-  %p\n", *result, result);*/
-  /*fs_node_t* stdout_node = vfs_open("dev/stdout", "w");
-  char* str_buf = "Hello from vfs dev/stdout\n";
-  if (stdout_node == NULL){
-    log(LOG_SERIAL, false, "couldn't find file\n");
-  }*/
-  // write_fs(stdout_node, 0, strlen(str_buf), str_buf);
 #endif
   fprintf(VFS_FD_SERIAL, "hello from fprintf serial\n");
   char* date = read_rtc_date();
@@ -380,6 +348,5 @@ printf ("cmdline = %s\n", (char *) mb_info->cmdline);
 #else
   printf("> ");
 #endif
-  // char* argv[] = {"/bin/init", NULL};
   while (1) {};
 }

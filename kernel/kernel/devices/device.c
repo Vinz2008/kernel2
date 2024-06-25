@@ -37,7 +37,7 @@ static uint32_t stdout_write(fs_node_t* node, uint32_t offset, uint32_t size,
 
 void register_devices_necessary() {
   // Device* stdin_dev = (Device){.name="stdin", .close=0, .read=0, .write=0,};
-  Device* stdin_dev = create_device("stdin", 0, 0, &stdin_read, 0);
+  Device* stdin_dev = create_device("stdin", stdin_read, 0, 0, 0);
   // memset((uint8_t*)stdin_dev, 0, sizeof(Device));
   /*Device stdin_dev;
   memset((uint8_t*)&stdin_dev, 0, sizeof(Device));

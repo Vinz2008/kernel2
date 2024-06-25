@@ -406,6 +406,7 @@ void setup_chip8_emulator(const char* filename) {
   emulator.pc = 0x200;
   emulator.speed = 10;
   emulator.paused = false;
+  emulator.stack = NULL;
   memset(emulator.display, false, CHIP8_SCREEN_WIDTH * CHIP8_SCREEN_HEIGHT);
 
   fb = fb_get_info();

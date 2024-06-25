@@ -16,5 +16,7 @@ __attribute__((noreturn)) void __stack_chk_fail(void) {
 #else
   // panic("Stack smashing detected");
   printf("Stack smashing detected");
+  while (true)
+    ;
 #endif
 }

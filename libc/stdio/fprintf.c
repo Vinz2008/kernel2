@@ -86,7 +86,7 @@ int vfprintf(file_descriptor_t file, const char* format, va_list parameters) {
         // TODO: Set errno to EOVERFLOW.
         return -1;
       }
-      if (!fprint(file, &i2, sizeof(i2) - (10 - length))) {
+      if (!fprint(file, i2, sizeof(i2) - (10 - length))) {
         return -1;
       }
       written++;
@@ -101,7 +101,7 @@ int vfprintf(file_descriptor_t file, const char* format, va_list parameters) {
         // TODO: Set errno to EOVERFLOW.
         return -1;
       }
-      if (!fprint(file, &i2, sizeof(i2) - (10 - length))) {
+      if (!fprint(file, i2, sizeof(i2) - (10 - length))) {
         return -1;
       }
       written++;
@@ -117,7 +117,7 @@ int vfprintf(file_descriptor_t file, const char* format, va_list parameters) {
         // TODO: Set errno to EOVERFLOW.
         return -1;
       }
-      if (!fprint(file, &i2, sizeof(i2) - (10 - length))) {
+      if (!fprint(file, i2, sizeof(i2) - (10 - length))) {
         return -1;
       }
       written++;
@@ -132,7 +132,7 @@ int vfprintf(file_descriptor_t file, const char* format, va_list parameters) {
         // TODO: Set errno to EOVERFLOW.
         return -1;
       }
-      fprint(file, &i2, sizeof(i2) - (10 - length));
+      fprint(file, i2, sizeof(i2) - (10 - length));
       written++;
     } else {
       format = format_begun_at;

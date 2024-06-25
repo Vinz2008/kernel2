@@ -3,7 +3,6 @@
 #if defined(__is_libk)
 #include <kernel/config.h>
 #include <kernel/gui.h>
-#include <kernel/tty.h>
 #include <kernel/tty_framebuffer.h>
 #endif
 
@@ -14,7 +13,6 @@ int putchar(int ic) {
   // draw_string(&c, 100, 250, 0xFFFFFF);
   // putchar_gui(c);
 #else
-  // terminal_write(&c, sizeof(c));
   terminal_framebuffer_putc(c);
   // terminal_framebuffer_putc_back(c);
 #endif

@@ -201,7 +201,7 @@ static fs_node_t* initrd_finddir(fs_node_t* node, char* name) {
 int initrd_get_file_size(fs_node_t* node) {
   for (int i = 0; i < nroot_nodes; i++) {
     if (strcmp(node->name, root_nodes[i].name) == 0) {
-      return list_headers.headers[i]->size;
+      return getsize(list_headers.headers[i]->size);
     }
   }
   return -1;
@@ -285,11 +285,3 @@ void set_dev_node_initrd() {
 }
 
 fs_node_t* get_initrd_root() { return initrd_root; }
-
-vfs_tree_node_t* initrd_create_vfs_tree() {
-  vfs_tree_node_t* initrd_root_tree;
-  for (int i = 0; i < nroot_nodes; i++) {
-    // append to children list
-  }
-  return initrd_root_tree;
-}

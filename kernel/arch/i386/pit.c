@@ -4,7 +4,6 @@
 #include <kernel/irq_handlers.h>
 #include <kernel/pic.h>
 #include <kernel/pit.h>
-#include <kernel/tty.h>
 #include <kernel/x86.h>
 #include <stdio.h>
 #include <types.h>
@@ -63,11 +62,6 @@ void sys_tick_handler(registers_t* frame) {
   (void)frame;
   ++ticks;
   // log(LOG_SERIAL, false, "ticks in handler: %d\n", ticks);
-  if (tick_animation_enabled == true) {
-    const char ticks_anim_chars[] = {'-', '/', '|', '\\'};
-    size_t ti = ticks % 4;
-    terminal_tick(ticks_anim_chars[ti]);
-  }
   pic_send_EOI(IRQ_PIT);
 #if GUI_MODE
   if (ticks % 1000 == 0) {

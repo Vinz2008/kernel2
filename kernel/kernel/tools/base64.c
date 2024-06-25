@@ -34,8 +34,6 @@ static const unsigned char decoding_table[256] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00};
 
-static const int BASE64_INPUT_SIZE = 57;
-
 bool is_base64(char c) { return c && strchr(encoding_table, c) != NULL; }
 
 char* base64_encode(const unsigned char* data, size_t input_length,

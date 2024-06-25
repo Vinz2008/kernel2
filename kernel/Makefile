@@ -13,7 +13,7 @@ EXEC_PREFIX?=$(PREFIX)
 BOOTDIR?=$(EXEC_PREFIX)/boot
 INCLUDEDIR?=$(PREFIX)/include
 
-CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra
+CFLAGS:=$(CFLAGS) -ffreestanding -Wall
 CPPFLAGS:=$(CPPFLAGS) -D__is_kernel -Iinclude
 LDFLAGS:=$(LDFLAGS)
 LIBS:=$(LIBS) -nostdlib -lk -lgcc
@@ -32,8 +32,6 @@ $(KERNEL_ARCH_OBJS) \
 kernel/kernel.o \
 kernel/data_structures/list.o \
 kernel/data_structures/pair.o \
-kernel/data_structures/hashtable.o \
-kernel/data_structures/linked_list.o \
 kernel/data_structures/stack.o \
 kernel/fs/vfs.o \
 kernel/fs/devfs.o \
@@ -46,7 +44,6 @@ kernel/mm/paging.o \
 kernel/tools/ansi.o \
 kernel/tools/base64.o \
 kernel/proc/syscall.o \
-kernel/proc/process.o \
 kernel/devices/device.o \
 kernel/chip8/emulator.o \
 kernel/fb.o \

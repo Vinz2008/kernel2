@@ -8,7 +8,6 @@
 #include <kernel/pit.h>
 #include <kernel/ps2.h>
 #include <kernel/serial.h>
-#include <kernel/tty.h>
 #include <kernel/tty_framebuffer.h>
 #include <kernel/x86.h>
 #include <stddef.h>
@@ -136,10 +135,8 @@ void sys_key_handler(registers_t* frame) {
 
 #else
   if (scan_code == ENTER_KEY) { // ENTER - pressed
-    // launch_command();
     launch_command_framebuffer();
     empty_line_cli_framebuffer();
-    // empty_line_cli();
     if (!is_chip8_emulator_mode()) {
       printf("\n> ");
     }
@@ -147,14 +144,12 @@ void sys_key_handler(registers_t* frame) {
              scan_code == BACKSPACE_KEY) { // DELETE - pressed
     write_serialf("delete pressed\n");
     terminal_framebuffer_delete_character();
-    // remove_character();
     // bug with delete character (wrong keycode)
   } else if (scan_code == CURSOR_LEFT_KEY) {
-    move_cursor_left();
+    // TODO : implement cursor
   } else if (scan_code == CURSOR_UP_KEY) {
-    // terminal_print_last_command();
+    // TODO : print last command
   } else if (scan_code < 0x81) {
-    // terminal_keypress(scan_code);
     char c = keyboard_us[scan_code];
     terminal_framebuffer_keypress(c);
   }

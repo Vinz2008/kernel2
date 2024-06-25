@@ -20,7 +20,7 @@ include make.config
 
 ARCH = x86_64
 SRCS = $(wildcard *.c)
-CFLAGS = -Wall -Wextra --ansi -O2 -ffreestanding
+CFLAGS = -Wall --ansi -O2 -ffreestanding
 LIBS=-nostdlib
 TARGET = kernel.efi
 

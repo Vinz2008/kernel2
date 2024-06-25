@@ -7,7 +7,7 @@ char* strcpy(char* dst, const char* src) {
   char* s = dst;
   if (src && dst && src != dst) {
     while (*src) {
-      *dst++ = *src++;
+      *(dst++) = *(src++);
     }
     *dst = 0;
   }
@@ -21,7 +21,7 @@ char* strncpy(char* dst, const char* src, size_t num) {
   char* s = dst;
   if (src && dst && src != dst) {
     while (*src && num--) {
-      *dst++ = *src++;
+      *(dst++) = *(src++);
     }
     *dst = 0;
   }

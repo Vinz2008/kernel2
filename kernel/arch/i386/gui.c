@@ -49,6 +49,8 @@ void putchar_gui(char c) {
 
 void gui_keypress(char c) { putchar_gui(c); }
 
+void fill_window_place(window_t* win);
+
 void move_window(window_t* window, int x, int y) {
   if (window->x + x < 0 || window->x + x > fb.width) {
     return;

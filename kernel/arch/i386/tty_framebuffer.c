@@ -144,6 +144,8 @@ void terminal_framebuffer_putc_pixel(char c) {
   }*/
 }
 
+// TODO : create function terminal_framebuffer_putc_pixel which asks for the x
+// and y of the char to simplify this function
 void terminal_framebuffer_delete_character() {
   column -= 8;
   for (int i = 0; i < 16; i++) {
