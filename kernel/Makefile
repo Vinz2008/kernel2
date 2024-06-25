@@ -55,20 +55,20 @@ kernel/multiboot2.o \
 
 
 OBJS=\
-$(ARCHDIR)/crti.o \
-$(ARCHDIR)/crtbegin.o \
 $(KERNEL_OBJS) \
+# $(ARCHDIR)/crti.o \
+# $(ARCHDIR)/crtbegin.o \
 $(ARCHDIR)/crtend.o \
 $(ARCHDIR)/crtn.o \
 
 LINK_LIST=\
 $(LDFLAGS) \
-$(ARCHDIR)/crti.o \
-$(ARCHDIR)/crtbegin.o \
 $(KERNEL_OBJS) \
 $(LIBS) \
-$(ARCHDIR)/crtend.o \
-$(ARCHDIR)/crtn.o \
+# $(ARCHDIR)/crtend.o \
+# $(ARCHDIR)/crtn.o \
+# $(ARCHDIR)/crti.o \
+# $(ARCHDIR)/crtbegin.o \
 
 .PHONY: all clean install install-headers install-kernel
 .SUFFIXES: .o .c .S

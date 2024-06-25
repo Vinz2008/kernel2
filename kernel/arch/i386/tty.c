@@ -1,4 +1,3 @@
-#include "vga.h"
 #include <ctype.h>
 #include <kernel/chip8_emulator.h>
 #include <kernel/fb.h>
@@ -8,6 +7,7 @@
 #include <kernel/paging.h>
 #include <kernel/serial.h>
 #include <kernel/tty.h>
+#include <kernel/vga.h>
 #include <multiboot.h>
 #include <stdbool.h>
 #include <stddef.h>

@@ -1,11 +1,9 @@
 #include <assert.h>
-#include <kernel/ahci.h>
 #include <kernel/config.h>
 #include <kernel/cpuid.h>
 #include <kernel/descriptors_tables.h>
 #include <kernel/devfs.h>
 #include <kernel/device.h>
-#include <kernel/elf.h>
 #include <kernel/fb.h>
 #include <kernel/fpu.h>
 #include <kernel/graphics.h>
@@ -26,9 +24,7 @@
 #include <kernel/ps2.h>
 #include <kernel/rtc.h>
 #include <kernel/serial.h>
-#include <kernel/speaker.h>
 #include <kernel/syscall.h>
-#include <kernel/task.h>
 #include <kernel/tty.h>
 #include <kernel/tty_framebuffer.h>
 #include <kernel/vfs.h>
@@ -69,7 +65,6 @@ void kernel_main(uint32_t addr, uint32_t magic) {
   log(LOG_SERIAL, false, "MedusaOS\n");
   log(LOG_SERIAL, false, "kernel is %d KiB large\n",
       ((uint32_t)&KERNEL_SIZE) >> 0);
-  // mb_info = mbd;
   struct multiboot_tag* tag;
   unsigned size;
   if (magic != MULTIBOOT2_BOOTLOADER_MAGIC) {
@@ -81,6 +76,7 @@ void kernel_main(uint32_t addr, uint32_t magic) {
   }
   size = *(unsigned*)addr;
   log(LOG_SERIAL, false, "Annonced mbi size: %x\n", size);
+  // TODO : move this in a handle_multiboot function ?
   for (tag = (struct multiboot_tag*)(addr + 8);
        tag->type != MULTIBOOT_TAG_TYPE_END;
        tag = (struct multiboot_tag*)((multiboot_uint8_t*)tag +
@@ -106,7 +102,6 @@ void kernel_main(uint32_t addr, uint32_t magic) {
         set_initrd_address((uint32_t)data);
         fs_root = initialise_initrd((uint32_t)data);
         vfs_mount("/", fs_root);
-        // vfs_mount("/tmp", fs_root);
         struct dirent* dir = NULL;
         int i = 0;
         while ((dir = readdir_fs(fs_root, i)) != NULL) {
@@ -122,10 +117,8 @@ void kernel_main(uint32_t addr, uint32_t magic) {
         devfs_initialize();
         set_dev_node_initrd();
         register_devices_necessary();
-        // initrd_list_filenames(data);
-
       } else {
-        elf_load_file(data);
+        // is not an initrd module (is an elf ?)
       }
       break;
     case MULTIBOOT_TAG_TYPE_BASIC_MEMINFO:
@@ -314,22 +307,6 @@ void kernel_main(uint32_t addr, uint32_t magic) {
   log(LOG_SERIAL, false, "SSE initialized\n");
   init_syscalls();
   log(LOG_ALL, true, "Syscalls enabled\n");
-  ahci_init();
-  log(LOG_SERIAL, false, "AHCI initialized\n");
-  init_speaker();
-  initTasking();
-  log(LOG_SERIAL, false, "Cooperative multitasking initialized\n");
-  test_switch_task();
-  // init_proc();
-  //  log(LOG_SERIAL, false, "scheduler initialized\n");
-  //   syscall_c(SYS_READ, 0, 0, 0);
-  /*char buf[15];
-  strcpy(buf, "test syscall\n");
-  for (int i = 0; i < strlen(buf); i++){
-    char temp = buf[i];
-    log(LOG_SERIAL, false, "char : %c\n", temp);
-    //syscall3(SYS_WRITE, VFS_FD_SERIAL, (uint8_t*)&temp, sizeof(temp));
-  }*/
   /*if (mb_info->mods_count > 0){
           mod = (multiboot_module_t *) mb_info->mods_addr;
           uint32_t initrd_location = *((uint32_t*)mb_info->mods_addr);

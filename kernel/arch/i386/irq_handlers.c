@@ -4,7 +4,6 @@
 #include <kernel/irq_handlers.h>
 #include <kernel/keyboard.h>
 #include <kernel/misc.h>
-#include <kernel/mouse.h>
 #include <kernel/pic.h>
 #include <kernel/pit.h>
 #include <kernel/ps2.h>
@@ -27,9 +26,6 @@ static void* irq_routines[16] = {0};
 extern char keyboard_us[];
 extern char keyboard_us_shift[];
 bool key_pressed[128];
-int8_t mouse_byte[3];
-
-uint8_t mouse_cycle = 0;
 
 void irq_register_handler(int irq, void (*handler)(registers_t*)) {
 
@@ -59,6 +55,7 @@ void handle_platform_irq(registers_t* frame) {
   pic_send_EOI(irq);
 }
 
+// TODO : remove this ?
 /*void sys_sleep(int seconds){
     log(LOG_SERIAL, false, "seconds to wait : %d\n", seconds);
     uint64_t sleep_ticks = ticks + (seconds * SYSTEM_TICKS_PER_SEC);
@@ -71,30 +68,6 @@ void handle_platform_irq(registers_t* frame) {
 void sys_mouse_handler(registers_t* frame) {
   log(LOG_SERIAL, false, "mouse moved\n");
   return;
-  //(void)frame;
-  /*uint8_t status = inb(MOUSE_STATUS);
-  while (status & MOUSE_BBIT){
-      int8_t mouse_in = inb(MOUSE_PORT);
-      if (status & MOUSE_F_BIT){
-          switch(mouse_cycle){
-              case 0:
-                  mouse_byte[0] = mouse_in;
-                  ++mouse_cycle;
-                  break;
-              case 1:
-                  mouse_byte[1] = mouse_in;
-                                      ++mouse_cycle;
-                                      break;
-              case 2:
-                  mouse_byte[2] = mouse_in;
-                  if (mouse_byte[0] & 0x80 || mouse_byte[0] & 0x40) {
-                                              // x/y overflow? bad packet!
-                                              break;
-                                      }
-                  log(LOG_SERIAL, false, "mouse packet\n");
-          }
-      }
-  }*/
 }
 
 void (*custom_keypress_function)(int) = NULL;

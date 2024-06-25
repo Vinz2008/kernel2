@@ -58,6 +58,5 @@ typedef enum {
 void init_ps2();
 bool ps2_write_device(uint32_t device, uint8_t b);
 bool ps2_expect_ack();
-bool ps2_write_device(uint32_t device, uint8_t b);
 uint8_t ps2_read(uint32_t port);
 void ps2_initialize();

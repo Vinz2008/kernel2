@@ -13,7 +13,6 @@
 #include <kernel/misc.h>
 #include <kernel/pit.h>
 #include <kernel/rtc.h>
-#include <kernel/speaker.h>
 #include <kernel/tty_framebuffer.h>
 #include <kernel/vfs.h>
 #include <stdio.h>
@@ -479,10 +478,6 @@ void launch_command_framebuffer() {
     printf("i386\n");
   } else if (strcmp("reboot", command) == 0) {
     reboot();
-  } else if (strcmp("beep", command) == 0) {
-    pcspkr_beep(1000, 100);
-    pcspkr_beep(1000, 10);
-    pcspkr_beep(1000, 300);
   } else if (strcmp("sleep", command) == 0) {
     int seconds = atoi(argv[0]);
     pit_mdelay(1000 * seconds);

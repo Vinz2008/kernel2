@@ -150,14 +150,14 @@ static uint32_t device;
 void init_keyboard(int dev) {
   device = dev;
   irq_register_handler(1, sys_key_handler);
-  ps2_write_device(device, KBD_SSC_CMD);
+  /*ps2_write_device(device, KBD_SSC_CMD);
   ps2_expect_ack();
   ps2_write_device(device, KBD_SSC_GET);
   ps2_expect_ack();
   uint8_t scancode_set = ps2_read(PS2_DATA);
 
   ps2_write_device(device, PS2_DEV_ENABLE_SCAN);
-  ps2_expect_ack();
+  ps2_expect_ack();*/
 }
 
 void keyboard_install() {
